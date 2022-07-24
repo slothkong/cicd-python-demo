@@ -1,25 +1,24 @@
 name: Create Release
 
-on:
-  workflow_dispatch:
-    inputs:
-      version:
-        description: 'Semantic versioning type of the new  reelase (major / minor / patch)'
-        required: true
-        type: choice
-        options: 
-        - patch
-        - minor
-        - major
+on: 
+  push:
+    branches:
+      - release
 
 jobs:
-  create-github-release:
-    name: Create GitHub Release
+  release-on-push:
+    
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Create Release
-        run: gh release create ${{ github.ref }} --generate-notes
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - id: release
+      - uses: rymndhng/release-on-push-action@v0.25.0
+        with:
+          bump_version_scheme: minor
+          tag_prefix: v
+    - name: Check Output Parameters
+      run: |
+        echo "Tag name ${{ steps.release.outputs.tag_name }}"
+        echo "Release version ${{ steps.release.outputs.version }}"
