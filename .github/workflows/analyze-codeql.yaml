@@ -1,15 +1,17 @@
-name: Continous Integration
-
-on: 
-  push:
-    branches:
-      - main
+name: Analyse Code Quality
 
 env:
   SERVICE_NAME: demo-service
   
+on: 
+  push:
+    branches:
+      - main
+    paths:
+      - $SERVICE_NAME/**
+
 jobs: 
-  build:
+  test:
     
     runs-on: ubuntu-latest
     strategy:
@@ -17,7 +19,8 @@ jobs:
         python-version:
           - "3.8"
     steps:
-      - uses: actions/checkout@v3      
+      - name: Checkout code
+        uses: actions/checkout@v3      
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
@@ -36,4 +39,4 @@ jobs:
       - name: Test with pytest and create coverage report
         run: |
           coverage run -m pytest ./$SERVICE_NAME/src/test
-          coverage report -m --rcfile=.coveragerc          
+          coverage report -m --rcfile=.coveragerc
