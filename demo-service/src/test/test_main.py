@@ -1,6 +1,5 @@
-import os
 import pytest
-from  main import app
+from main import app
 
 
 @pytest.fixture
@@ -14,4 +13,3 @@ def test_handler(client):
 
     assert r.data.decode() == "Hello, World!"
     assert r.status_code == 200
-
