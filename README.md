@@ -1,2 +1,2 @@
-# cicd-python-demo
-A continues integration and continous development python demo project.
+# CI/CD Python Demo
+A continues integration and continous delivery demo repository for python-base services.
